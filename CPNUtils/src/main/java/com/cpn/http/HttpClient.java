@@ -42,6 +42,7 @@ public class HttpClient {
 		final HttpPost post = new HttpPost(anAction);
 		final StringEntity entity = new StringEntity(mapper.writeValueAsString(aMessage));
 		entity.setContentType("application/json; charset=UTF-8");
+		post.setHeader("content-type", "application/json");
 		final ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		post.setEntity(entity);
 		final String responseBody = client.execute(post, responseHandler);
