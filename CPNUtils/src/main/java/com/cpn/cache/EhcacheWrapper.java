@@ -13,7 +13,9 @@ public class EhcacheWrapper<K, V extends Cacheable<K>> implements CacheWrapper<K
 	public EhcacheWrapper(final String cacheName, final CacheManager aManager) {
 		this.cacheName = cacheName;
 		this.cacheManager = aManager;
-		cacheManager.addCache(cacheName);
+		if(!cacheManager.cacheExists(cacheName)){
+			cacheManager.addCache(cacheName);
+		}
 	}
 
 	@Override
