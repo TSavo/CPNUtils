@@ -52,7 +52,6 @@ public class SystemExecutor {
 	}
 
 	public int runCommand(String commandLine) throws SystemExecutorException, IOException {
-		System.out.println("Running: " + commandLine);
 		/* run command */
 		Process process = runCommandHelper(commandLine);
 
