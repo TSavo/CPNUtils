@@ -3,6 +3,7 @@ package com.cpn.xml;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -15,14 +16,6 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -32,6 +25,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 public class XMLUtil {
 	private static final DocumentBuilder builder;
@@ -45,22 +41,16 @@ public class XMLUtil {
 		}
 	}
 
-	public static final String prettyPrint(final Node aNode) {
-		Transformer transformer;
-		try {
-			transformer = TransformerFactory.newInstance().newTransformer();
-		} catch (TransformerConfigurationException | TransformerFactoryConfigurationError e1) {
-			throw new RuntimeException(e1.getMessage(), e1);
-		}
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		final StreamResult result = new StreamResult(new StringWriter());
-		final DOMSource source = new DOMSource(aNode);
-		try {
-			transformer.transform(source, result);
-		} catch (final TransformerException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-		return result.getWriter().toString();
+	public static final String prettyPrint(final Document aNode) throws IOException {
+		OutputFormat format = new OutputFormat(aNode);
+    format.setLineWidth(65);
+    format.setIndenting(true);
+    format.setIndent(2);
+    Writer out = new StringWriter();
+    XMLSerializer serializer = new XMLSerializer(out, format);
+    serializer.serialize(aNode);
+
+    return out.toString();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -127,7 +117,7 @@ public class XMLUtil {
 		final Calendar c = new GregorianCalendar();
 		Date d;
 		try {
-			d = DateFormat.getDateInstance().parse((get(anXPath)));
+			d = DateFormat.getDateInstance().parse(get(anXPath));
 		} catch (final ParseException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
