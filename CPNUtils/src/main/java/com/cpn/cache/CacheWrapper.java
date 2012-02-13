@@ -10,4 +10,6 @@ public interface CacheWrapper<K, V extends Cacheable<K>> {
 	public abstract CacheWrapper<K, V> putAll(List<V> aList);
 
 	public abstract CacheWrapper<K, V> removeAll();
+	
+	public abstract List<K> getKeys();
 }

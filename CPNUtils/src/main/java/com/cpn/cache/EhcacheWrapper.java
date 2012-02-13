@@ -37,6 +37,12 @@ public class EhcacheWrapper<K, V extends Cacheable<K>> implements CacheWrapper<K
 		getCache().put(new Element(key, value));
 		return this;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<K> getKeys() {
+		return getCache().getKeys();
+	}
 
 	@Override
 	public CacheWrapper<K, V> putAll(final List<V> aList) {
