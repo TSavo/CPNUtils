@@ -16,6 +16,14 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<!-- Publish the versioned releases here -->
+		<repository>
+			<id>repo</id>
+			<name>My maven2 repository</name>
+			<url>dav:http://maestro.cpncloud.net:8080/nexus/content/repositories/</url>
+		</repository>
+	</distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>commons-lang</groupId>

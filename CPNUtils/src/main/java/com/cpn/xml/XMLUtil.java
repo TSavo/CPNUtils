@@ -103,6 +103,10 @@ public class XMLUtil {
 		return toStringList(XMLUtil.<NodeList> xPath(aNode, anXPath, XPathConstants.NODESET));
 	}
 
+	public static final Node xPathNode(final Node aNode, final String anXPath) throws XPathExpressionException {
+		return XMLUtil.<Node> xPath(aNode, anXPath, XPathConstants.NODE);
+	}
+	
 	private final Node node;
 
 	public XMLUtil(final Node aNode) {
@@ -140,5 +144,9 @@ public class XMLUtil {
 
 	public List<String> getStringList(final String anXPath) throws XPathExpressionException {
 		return xPathStringList(node, anXPath);
+	}
+	
+	public Node getNode(final String anXPath) throws XPathExpressionException {
+		return xPathNode(node, anXPath);
 	}
 }
